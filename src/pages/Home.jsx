@@ -7,7 +7,7 @@ import CategoryFilter from '../components/CategoryFilter';
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [categories, setCategories] = useState([]);
   const { movies, loading, error } = useFetchMovies(searchQuery);
   const { favorites, isFavorite, addFavorite, removeFavorite } = useFavorites();
@@ -27,12 +27,9 @@ const Home = () => {
   };
 
   const handleToggleFavorite = (movie) => {
-    console.log('Toggle favorite for movie:', movie.id);
     if (isFavorite(movie.id)) {
-      console.log('Removing from favorites');
       removeFavorite(movie.id);
     } else {
-      console.log('Adding to favorites');
       // Create a consistent movie object structure for favorites
       const favoriteMovie = {
         id: movie.id,
@@ -49,7 +46,7 @@ const Home = () => {
   };
 
   // Filter movies by category if selected
-  const filteredMovies = selectedCategory
+  const filteredMovies = selectedCategory && selectedCategory !== 'All'
     ? movies.filter(movie => movie.genres?.includes(selectedCategory))
     : movies;
 
@@ -79,14 +76,15 @@ const Home = () => {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-4">
           {filteredMovies.map(movie => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              isFavorite={isFavorite(movie.id)}
-              onToggleFavorite={() => handleToggleFavorite(movie)}
-            />
+            <div key={movie.id} className="movie-card-container">
+              <MovieCard
+                movie={movie}
+                isFavorite={isFavorite(movie.id)}
+                onToggleFavorite={handleToggleFavorite}
+              />
+            </div>
           ))}
         </div>
       )}
