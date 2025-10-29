@@ -36,6 +36,7 @@ const MovieCard = ({ movie, isFavorite, onToggleFavorite }) => {
           <button
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               onToggleFavorite(movie);
             }}
             className={`p-2 rounded-full ${
