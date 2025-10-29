@@ -1,33 +1,21 @@
-import axios from 'axios';
+// API helpers: tiny wrappers around the TVMaze API
+// Keeps fetch logic tidy and consistent across the app
+const BASE = 'https://api.tvmaze.com'
 
-const API_URL = 'https://api.tvmaze.com/shows';
+// Search shows by a query string (fallback to popular-like search)
+export async function searchShows(query) {
+  const q = encodeURIComponent(query || '')
+  const url = q ? `${BASE}/search/shows?q=${q}` : `${BASE}/shows?page=1`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error('Failed to fetch shows')
+  const data = await res.json()
+  // Normalize search API shape (search returns { score, show }) to plain show objects
+  return Array.isArray(data) ? data.map((item) => item.show || item) : []
+}
 
-export const fetchAllShows = async () => {
-  try {
-    const response = await axios.get(API_URL);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching shows:', error);
-    throw error;
-  }
-};
-
-export const fetchShowById = async (id) => {
-  try {
-    const response = await axios.get(`${API_URL}/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching show with id ${id}:`, error);
-    throw error;
-  }
-};
-
-export const searchShows = async (query) => {
-  try {
-    const response = await axios.get(`https://api.tvmaze.com/search/shows?q=${query}`);
-    return response.data.map(item => item.show);
-  } catch (error) {
-    console.error('Error searching shows:', error);
-    throw error;
-  }
-};
+// Fetch one show by id
+export async function fetchShowById(id) {
+  const res = await fetch(`${BASE}/shows/${id}`)
+  if (!res.ok) throw new Error('Failed to fetch show')
+  return res.json()
+}

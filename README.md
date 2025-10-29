@@ -40,27 +40,6 @@ A single-page application (SPA) built with React that allows users to explore mo
     api.js
   App.jsx
   main.jsx
-```
-
-## Installation and Setup
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/movie-explorer.git
-   cd movie-explorer
-   ```
-
-2. Install dependencies:
-   ```
-   npm install
-   ```
-
-3. Start the development server:
-   ```
-   npm run dev
-   ```
-
-4. Open your browser and navigate to the URL shown in the terminal (typically http://localhost:5173/)
 
 ## Usage
 
@@ -75,14 +54,4 @@ This project uses the [TVMaze API](https://api.tvmaze.com/shows) to fetch movie 
 
 ## Screenshots
 
-![Home Page](screenshots/home.png)
-![Movie Details](screenshots/details.png)
-![Favorites Page](screenshots/favorites.png)
-
-## Live Demo
-
-[View Live Demo](https://your-live-demo-link.com)
-
-## License
-
-MIT
+![alt text](public/movie.img.jpg)

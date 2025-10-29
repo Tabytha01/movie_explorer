@@ -1,3 +1,6 @@
+// FavoritesContext: Central place to store favorites across the app
+// - Persists to localStorage so your favorites survive page refreshes
+// - Exposes helpers: addFavorite, removeFavorite, isFavorite
 import { createContext, useEffect, useState, useCallback } from 'react'
 
 const STORAGE_KEY = 'movieFavorites'
@@ -12,7 +15,7 @@ export const FavoritesContext = createContext({
 export function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState([])
 
-  // Load favorites from localStorage on mount
+  // On app load: read any saved favorites from localStorage
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
@@ -26,7 +29,7 @@ export function FavoritesProvider({ children }) {
     }
   }, [])
 
-  // Persist favorites to localStorage on change
+  // Whenever favorites change: write them back to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites))
@@ -35,6 +38,7 @@ export function FavoritesProvider({ children }) {
     }
   }, [favorites])
 
+  // Add a show if it isn’t already saved
   const addFavorite = useCallback((movie) => {
     if (!movie || !movie.id) return
     setFavorites((prev) => {
@@ -43,16 +47,19 @@ export function FavoritesProvider({ children }) {
     })
   }, [])
 
+  // Remove a show by id
   const removeFavorite = useCallback((movieId) => {
     setFavorites((prev) => prev.filter((m) => m.id !== movieId))
   }, [])
 
+  // Check if a show id exists in favorites
   const isFavorite = useCallback((movieId) => {
     return favorites.some((m) => m.id === movieId)
   }, [favorites])
 
   const value = { favorites, addFavorite, removeFavorite, isFavorite }
 
+  // Provide favorites state and helpers to the whole app
   return (
     <FavoritesContext.Provider value={value}>
       {children}

@@ -1,36 +1,39 @@
-import { useState, useEffect } from 'react';
-import useFetchMovies from '../hooks/useFetchMovies';
-import useFavorites from '../hooks/useFavorites';
-import MovieCard from '../components/MovieCard';
-import SearchBar from '../components/SearchBar';
-import CategoryFilter from '../components/CategoryFilter';
+// Home: search and browse shows, with quick favorite toggling
+// Fetches movies, extracts categories, filters by category, and lets you favorite
+import { useState, useEffect } from 'react'
+import useFetchMovies from '../hooks/useFetchMovies'
+import useFavorites from '../hooks/useFavorites'
+import MovieCard from '../components/MovieCard'
+import SearchBar from '../components/SearchBar'
+import CategoryFilter from '../components/CategoryFilter'
 
-const Home = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [categories, setCategories] = useState([]);
-  const { movies, loading, error } = useFetchMovies(searchQuery);
-  const { favorites, isFavorite, addFavorite, removeFavorite } = useFavorites();
+function Home() {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [categories, setCategories] = useState([])
+  const { movies, loading, error } = useFetchMovies(searchQuery)
+  const { favorites, isFavorite, addFavorite, removeFavorite } = useFavorites()
 
-  // Extract unique categories from movies
+  // Extract unique categories from fetched movies
   useEffect(() => {
     if (movies.length > 0) {
-      const allGenres = movies.flatMap(movie => movie.genres || []);
-      const uniqueGenres = [...new Set(allGenres)];
-      setCategories(uniqueGenres);
+      const allGenres = movies.flatMap((movie) => movie.genres || [])
+      const uniqueGenres = [...new Set(allGenres)]
+      setCategories(uniqueGenres)
     }
-  }, [movies]);
+  }, [movies])
 
+  // Update search and clear category
   const handleSearch = (query) => {
-    setSearchQuery(query);
-    setSelectedCategory('');
-  };
+    setSearchQuery(query)
+    setSelectedCategory('')
+  }
 
+  // Toggle favorite for a movie (ensuring a consistent shape)
   const handleToggleFavorite = (movie) => {
     if (isFavorite(movie.id)) {
-      removeFavorite(movie.id);
+      removeFavorite(movie.id)
     } else {
-      // Create a consistent movie object structure for favorites
       const favoriteMovie = {
         id: movie.id,
         name: movie.name,
@@ -39,46 +42,51 @@ const Home = () => {
         rating: movie.rating,
         premiered: movie.premiered,
         status: movie.status,
-        summary: movie.summary
-      };
-      addFavorite(favoriteMovie);
+        summary: movie.summary,
+      }
+      addFavorite(favoriteMovie)
     }
-  };
+  }
 
-  // Filter movies by category if selected
-  const filteredMovies = selectedCategory && selectedCategory !== 'All'
-    ? movies.filter(movie => movie.genres?.includes(selectedCategory))
-    : movies;
+  // Filter by category if selected
+  const filteredMovies =
+    selectedCategory && selectedCategory !== 'All'
+      ? movies.filter((movie) => movie.genres?.includes(selectedCategory))
+      : movies
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className='container mx-auto px-4 py-8'>
+      {/* Search bar */}
       <SearchBar onSearch={handleSearch} />
-      
+
+      {/* Category filter (shows when we have genres) */}
       {categories.length > 0 && (
-        <CategoryFilter 
+        <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />
       )}
 
+      {/* Loading / error / empty states */}
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="text-xl">Loading movies...</div>
+        <div className='flex justify-center items-center h-64'>
+          <div className='text-xl'>Loading movies...</div>
         </div>
       ) : error ? (
-        <div className="text-red-500 text-center">{error}</div>
+        <div className='text-red-500 text-center'>{error}</div>
       ) : filteredMovies.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-xl text-gray-600">No movies found</p>
+        <div className='text-center py-10'>
+          <p className='text-xl text-gray-600'>No movies found</p>
           {searchQuery && (
-            <p className="mt-2">Try a different search term or clear filters</p>
+            <p className='mt-2'>Try a different search term or clear filters</p>
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-4">
-          {filteredMovies.map(movie => (
-            <div key={movie.id} className="movie-card-container">
+        // Grid of results
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-4'>
+          {filteredMovies.map((movie) => (
+            <div key={movie.id} className='movie-card-container'>
               <MovieCard
                 movie={movie}
                 isFavorite={isFavorite(movie.id)}
@@ -88,8 +96,13 @@ const Home = () => {
           ))}
         </div>
       )}
-    </div>
-  );
-};
 
-export default Home;
+      {/* Small note when user has favorites (optional UX touch) */}
+      {favorites.length > 0 && (
+        <p className='mt-6 text-sm text-gray-600'>You can find your saved shows in Favorites.</p>
+      )}
+    </div>
+  )
+}
+
+export default Home
