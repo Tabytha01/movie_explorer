@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchAllShows, searchShows } from '../utils/api'
+import { searchShows } from '../utils/api'
 
 function useFetchMovies(searchQuery = '') {
   const [movies, setMovies] = useState([])
@@ -12,7 +12,7 @@ function useFetchMovies(searchQuery = '') {
       setLoading(true)
       setError('')
       try {
-        const data = searchQuery ? await searchShows(searchQuery) : await fetchAllShows()
+        const data = await searchShows(searchQuery)
         if (!cancelled) {
           setMovies(Array.isArray(data) ? data : [])
         }

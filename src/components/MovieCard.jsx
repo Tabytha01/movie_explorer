@@ -21,33 +21,48 @@ function MovieCard({ movie }) {
   return (
     <div
       onClick={handleCardClick}
-      className='cursor-pointer bg-white rounded-lg shadow hover:shadow-md transition p-3 flex flex-col'
+      className='group cursor-pointer bg-white/90 backdrop-blur rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 p-4 flex flex-col relative overflow-hidden animate-fade-in'
     >
-      {/* Poster (fallback to a placeholder if missing) */}
-      <img
-        src={movie.image?.medium || movie.image?.original || '/placeholder-poster.png'}
-        alt={movie.name || 'Untitled'}
-        className='w-full h-64 object-cover rounded'
-        loading='lazy'
-      />
+      {/* Overlay effect on hover */}
+      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl'></div>
 
-      {/* Title + Favorite toggle */}
-      <div className='mt-3 flex items-center justify-between'>
-        <h3 className='text-sm font-medium text-gray-800'>{movie.name}</h3>
-        <button
-          onClick={handleFavoriteClick}
-          aria-pressed={favorite}
-          aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
-          className={`text-lg ${favorite ? 'text-red-500' : 'text-gray-400'} hover:scale-105 transition`}
-        >
-          {favorite ? '❤️' : '🤍'}
-        </button>
+      {/* Poster with enhanced styling */}
+      <div className='relative aspect-[2/3] overflow-hidden rounded-lg'>
+        <img
+          src={movie.image?.medium || movie.image?.original || '/placeholder-poster.png'}
+          alt={movie.name || 'Untitled'}
+          className='w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300'
+          loading='lazy'
+        />
       </div>
 
-      {/* Optional rating */}
-      {movie.rating?.average && (
-        <p className='mt-1 text-xs text-gray-600'>Rating: {movie.rating.average}</p>
-      )}
+      {/* Content container */}
+      <div className='mt-4 flex-1 flex flex-col'>
+        {/* Title + Favorite toggle */}
+        <div className='flex items-start justify-between gap-2'>
+          <h3 className='text-base font-semibold text-gray-900 leading-tight group-hover:text-[#2A2F4F] transition-colors'>
+            {movie.name}
+          </h3>
+          <button
+            onClick={handleFavoriteClick}
+            aria-pressed={favorite}
+            aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
+            className={`text-xl transform hover:scale-110 transition-transform ${
+              favorite ? 'text-[#E5BEEC]' : 'text-gray-400'
+            }`}
+          >
+            {favorite ? '♥' : '♡'}
+          </button>
+        </div>
+
+        {/* Rating with enhanced styling */}
+        {movie.rating?.average && (
+          <div className='mt-2 flex items-center gap-1'>
+            <span className='text-yellow-500'>★</span>
+            <span className='text-sm text-gray-700'>{movie.rating.average}</span>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
