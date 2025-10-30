@@ -43,16 +43,20 @@ A single-page application (SPA) built with React that allows users to explore mo
 
 ## Usage
 
-- **Home Page**: Browse all movies, search, and filter by category
-- **Movie Details**: Click on any movie to view its details
-- **Favorites**: Click the heart icon to add/remove movies from favorites
-- **Favorites Page**: Access your saved movies via the "Favorites" link in the navigation bar
+- **Home Page**:
+ Browse all movies, search, and filter by category
+- **Movie Details**: 
+Click on any movie to view its details
+- **Favorites**: 
+Click the heart icon to add/remove movies from favorites
+- **Favorites Page**:
+ Access your saved movies via the "Favorites" link in the navigation bar
 
 ## API
 
 This project uses the [TVMaze API](https://api.tvmaze.com/shows) to fetch movie data.
 
 ## Screenshots
+![alt text](image-1.png)
 
-![alt text](image.png)
 
