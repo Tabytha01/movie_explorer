@@ -58,5 +58,5 @@ This project uses the [TVMaze API](https://api.tvmaze.com/shows) to fetch movie 
 
 ## Screenshots
 
-![movie img](https://github.com/user-attachments/assets/48e2523d-d15b-4bd0-9da1-6d1a2f8af5c9)
 
+![movie img](https://github.com/user-attachments/assets/b47bccf9-f8b8-4719-957a-9e83318b6289)
