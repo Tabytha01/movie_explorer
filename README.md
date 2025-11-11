@@ -57,6 +57,6 @@ Click the heart icon to add/remove movies from favorites
 This project uses the [TVMaze API](https://api.tvmaze.com/shows) to fetch movie data.
 
 ## Screenshots
-![alt text](image-1.png)
 
+![movie img](https://github.com/user-attachments/assets/48e2523d-d15b-4bd0-9da1-6d1a2f8af5c9)
 
