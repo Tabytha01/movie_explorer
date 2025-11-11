@@ -40,7 +40,7 @@ A single-page application (SPA) built with React that allows users to explore mo
     api.js
   App.jsx
   main.jsx
-
+```
 ## Usage
 
 - **Home Page**:
@@ -57,6 +57,4 @@ Click the heart icon to add/remove movies from favorites
 This project uses the [TVMaze API](https://api.tvmaze.com/shows) to fetch movie data.
 
 ## Screenshots
-
-
-![movie img](https://github.com/user-attachments/assets/b47bccf9-f8b8-4719-957a-9e83318b6289)
+![movie img](https://github.com/user-attachments/assets/c14f0e61-78d0-4123-9329-bf8c5e137b66)
